@@ -1,9 +1,10 @@
 import random
 from pygame import Surface
+from pygame.draw import line
 
 WIDTH = 350
 HEIGHT = 200
-
+BOTTOM_COLOUR = (255,0,0)
 BLACK = (0, 0, 0)
 snow_color = (255, 255, 255)
 snow_particles = []
@@ -12,6 +13,8 @@ settled = Surface((WIDTH, HEIGHT))
 logo = Actor('python', center=(WIDTH / 2, HEIGHT / 2))
 settled.blit(images.python, logo.topleft)
 
+line(settled, BOTTOM_COLOUR, (0, HEIGHT - 1), (WIDTH / 2 - 10, HEIGHT - 1))
+line(settled, BOTTOM_COLOUR, (WIDTH, HEIGHT - 1), (WIDTH / 2 + 10, HEIGHT - 1))
 
 def update():
     pixels = []
@@ -33,7 +36,7 @@ def update():
             if not valid_drift:
                 settled.set_at((x,y), snow_color)
             else:
-                settled.set_at(random.choice(valid_drift), snow_color)
+                pixels.append(random.choice(valid_drift))
         else:
             pixels.append((x, nexty))
     snow_particles[:] = pixels
@@ -48,4 +51,4 @@ def draw():
     for part in snow_particles:
         screen.surface.set_at(part, snow_color)
 
-clock.schedule_interval(create_particle, .05)
+clock.schedule_interval(create_particle, .01)
