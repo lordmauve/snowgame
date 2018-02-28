@@ -9,7 +9,8 @@ BLACK = (0, 0, 0)
 drag_start = None
 current_mouse = None
 
-score = 0
+scorel = 0
+scorer = 0
 snow_color = (255, 255, 255)
 guide_line = (0, 255, 0)
 snow_particles = []
@@ -19,16 +20,20 @@ settled = Surface((WIDTH, HEIGHT))
 # logo = Actor('python', center=(WIDTH / 2, HEIGHT / 2))
 # settled.blit(images.python, logo.topleft)
 
-line(settled, BOTTOM_COLOUR, (0, HEIGHT - 1), (WIDTH / 2 - 10, HEIGHT - 1))
-line(settled, BOTTOM_COLOUR, (WIDTH, HEIGHT - 1), (WIDTH / 2 + 10, HEIGHT - 1))
+line(settled, BOTTOM_COLOUR, (0, HEIGHT - 1), (WIDTH / 4 - 10, HEIGHT - 1))
+line(settled, BOTTOM_COLOUR, (3* WIDTH / 4 - 10, HEIGHT - 1), (WIDTH / 4 + 10, HEIGHT - 1))
+line(settled, BOTTOM_COLOUR, (WIDTH, HEIGHT - 1), (3* WIDTH / 4 + 10, HEIGHT - 1))
 
 def update():
-    global score
+    global scorel, scorer
     pixels = []
     for x, y in snow_particles:
         nexty = y+1
         if nexty >= HEIGHT:
-            score += 1
+            if x > WIDTH // 2:
+                scorer += 1
+            else:
+                scorel += 1
             continue
         # if nexty == HEIGHT:
             # settled.set_at((x,y), snow_color)
@@ -78,6 +83,7 @@ def draw():
     if drag_start:
         line(screen.surface, guide_line, drag_start, current_mouse)
 
-    screen.draw.text(f"Score {score}", (10, 10), color="orange")
+    screen.draw.text(f"Left score {scorel}", (10, 10), color="orange")
+    screen.draw.text(f"Right score {scorer}", topright = (WIDTH - 10, 10), color="orange")
 
 clock.schedule_interval(create_particle, .01)
