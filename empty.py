@@ -9,6 +9,7 @@ BLACK = (0, 0, 0)
 drag_start = None
 current_mouse = None
 
+score = 0
 snow_color = (255, 255, 255)
 guide_line = (0, 255, 0)
 snow_particles = []
@@ -22,13 +23,15 @@ line(settled, BOTTOM_COLOUR, (0, HEIGHT - 1), (WIDTH / 2 - 10, HEIGHT - 1))
 line(settled, BOTTOM_COLOUR, (WIDTH, HEIGHT - 1), (WIDTH / 2 + 10, HEIGHT - 1))
 
 def update():
+    global score
     pixels = []
     for x, y in snow_particles:
         nexty = y+1
-        if nexty > HEIGHT:
+        if nexty >= HEIGHT:
+            score += 1
             continue
-        if nexty == HEIGHT:
-            settled.set_at((x,y), snow_color)
+        # if nexty == HEIGHT:
+            # settled.set_at((x,y), snow_color)
         elif settled.get_at((x, nexty)) != BLACK:
             left = x - 1
             right = x + 1
@@ -74,5 +77,7 @@ def draw():
 
     if drag_start:
         line(screen.surface, guide_line, drag_start, current_mouse)
+
+    screen.draw.text(f"Score {score}", (10, 10), color="orange")
 
 clock.schedule_interval(create_particle, .01)
