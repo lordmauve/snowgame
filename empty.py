@@ -1,8 +1,8 @@
 import random
 from pygame import Surface
 
-WIDTH = 300
-HEIGHT = 600
+WIDTH = 350
+HEIGHT = 200
 
 BLACK = (0, 0, 0)
 snow_color = (255, 255, 255)
@@ -16,12 +16,26 @@ settled.blit(images.python, logo.topleft)
 def update():
     pixels = []
     for x, y in snow_particles:
-        if y+1 > HEIGHT:
+        nexty = y+1
+        if nexty > HEIGHT:
             continue
-        if y+1 == HEIGHT or settled.get_at((x, y+1)) != BLACK:
+        if nexty == HEIGHT:
             settled.set_at((x,y), snow_color)
+        elif settled.get_at((x, nexty)) != BLACK:
+            left = x - 1
+            right = x + 1
+            drift = [(left, nexty), (right, nexty)]
+            valid_drift = []
+            for new_x, new_y in drift:
+                if 0 <= new_x < WIDTH:
+                    if settled.get_at((new_x, new_y)) == BLACK:
+                        valid_drift.append((new_x, new_y))
+            if not valid_drift:
+                settled.set_at((x,y), snow_color)
+            else:
+                settled.set_at(random.choice(valid_drift), snow_color)
         else:
-            pixels.append((x, y+1))
+            pixels.append((x, nexty))
     snow_particles[:] = pixels
 
 def create_particle():
