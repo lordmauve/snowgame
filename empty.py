@@ -3,16 +3,22 @@ from pygame import Surface
 
 WIDTH = 300
 HEIGHT = 600
+
+BLACK = (0, 0, 0)
 snow_color = (255, 255, 255)
 snow_particles = []
 settled = Surface((WIDTH, HEIGHT))
+
+logo = Actor('python', center=(WIDTH / 2, HEIGHT / 2))
+settled.blit(images.python, logo.topleft)
+
 
 def update():
     pixels = []
     for x, y in snow_particles:
         if y+1 > HEIGHT:
             continue
-        if y+1 == HEIGHT or settled.get_at((x, y+1)) == snow_color:
+        if y+1 == HEIGHT or settled.get_at((x, y+1)) != BLACK:
             settled.set_at((x,y), snow_color)
         else:
             pixels.append((x, y+1))
