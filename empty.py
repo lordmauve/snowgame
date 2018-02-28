@@ -36,7 +36,8 @@ def update():
             valid_drift = []
             for new_x, new_y in drift:
                 if 0 <= new_x < WIDTH:
-                    if settled.get_at((new_x, new_y)) == BLACK:
+                    if settled.get_at((new_x, new_y)) == BLACK and \
+                            settled.get_at((new_x, y)) == BLACK:
                         valid_drift.append((new_x, new_y))
             if not valid_drift:
                 settled.set_at((x,y), snow_color)
@@ -48,7 +49,6 @@ def update():
 
 def on_mouse_down(pos):
     global drag_start
-    print(drag_start, pos)
     drag_start = pos
 
 def on_mouse_up(pos):
