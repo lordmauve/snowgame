@@ -1,3 +1,4 @@
+import pgzrun
 import random
 from pygame import Surface
 from pygame.draw import line
@@ -16,9 +17,9 @@ guide_line = (0, 255, 0)
 snow_particles = []
 settled = Surface((WIDTH, HEIGHT))
 
-#
-# logo = Actor('python', center=(WIDTH / 2, HEIGHT / 2))
-# settled.blit(images.python, logo.topleft)
+
+logo = Actor('python', center=(WIDTH / 2, HEIGHT / 2))
+settled.blit(images.python, logo.topleft)
 
 line(settled, BOTTOM_COLOUR, (0, HEIGHT - 1), (WIDTH / 4 - 10, HEIGHT - 1))
 line(settled, BOTTOM_COLOUR, (3* WIDTH / 4 - 10, HEIGHT - 1), (WIDTH / 4 + 10, HEIGHT - 1))
@@ -83,7 +84,9 @@ def draw():
     if drag_start:
         line(screen.surface, guide_line, drag_start, current_mouse)
 
-    screen.draw.text(f"Left score {scorel}", (10, 10), color="orange")
-    screen.draw.text(f"Right score {scorer}", topright = (WIDTH - 10, 10), color="orange")
+    screen.draw.text(str(scorel), (10, 10), color="orange")
+    screen.draw.text(str(scorer), topright = (WIDTH - 10, 10), color="orange")
 
 clock.schedule_interval(create_particle, .01)
+
+pgzrun.go()
